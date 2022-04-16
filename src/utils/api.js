@@ -1,7 +1,8 @@
-// TODO use axios instead of fetch
+import AsyncStorage from '@react-native-community/async-storage';
 
 const BASE_API = 'https://api.b7web.com.br/devbarber/api';
 
+// TODO use axios instead of fetch
 export default {
   checkToken: async token => {
     const req = await fetch(`${BASE_API}/auth/refresh`, {
@@ -39,6 +40,12 @@ export default {
       body: JSON.stringify({name, email, password}),
     });
 
+    const json = await req.json();
+    return json;
+  },
+  getBarbers: async () => {
+    const token = await AsyncStorage.getItem('token');
+    const req = await fetch(`${BASE_API}/barbers?token=${token}`);
     const json = await req.json();
     return json;
   },
